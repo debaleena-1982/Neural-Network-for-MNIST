@@ -1,0 +1,87 @@
+import numpy as np
+data_path = "D:\PythonJupyter\cs342\lab6\data\\"
+mnist_train_x = np.load(data_path + 'mnist_train_x.npy')
+print('MNIST train set shape: ', mnist_train_x.shape)
+
+mnist_train_x_norm = np.array(mnist_train_x)/255
+
+# Exercise 1 code
+import matplotlib.pyplot as plt
+
+def display_mnist():
+    for i in range(5):
+        
+        #img_train = mnist_train_x[i]
+        img_train = mnist_train_x_norm[i]
+        plt.imshow(img_train, cmap='gray')
+        plt.show()
+
+firstfive = display_mnist()
+
+
+# Exercise 2 code
+
+#X_train = mnist_train_x
+X_train_norm = mnist_train_x_norm
+
+#X_train = X_train.reshape((len(X_train), np.prod(X_train.shape[1:])))
+X_train_norm = X_train_norm.reshape((len(X_train_norm), np.prod(X_train_norm.shape[1:])))
+
+import keras
+from keras.layers import Dense
+from keras.models import Sequential
+
+learning_rate = 0.001
+n_epochs = 10
+batch_size = 16
+
+#n_batches = int((mnist_train_x.shape[0])/(batch_size))
+n_batches = int((mnist_train_x_norm.shape[0])/(batch_size))
+
+# number of pixels in the MNIST image as number of inputs
+n_inputs = 784
+n_outputs = n_inputs
+# number of hidden layers
+n_layers = 2
+# neurons in each hidden layer
+n_neurons = [128,64]
+# add decoder layers
+n_neurons.extend(list(reversed(n_neurons)))
+n_layers = n_layers * 2
+
+model = Sequential()
+
+# add input to first layer
+model.add(Dense(units=n_neurons[0], activation='relu', input_shape=(n_inputs,)))
+
+for i in range(1,n_layers):
+    model.add(Dense(units=n_neurons[i], activation='relu'))
+              
+# add last layer as output layer
+#model.add(Dense(units=n_outputs, activation='linear'))
+model.add(Dense(units=n_outputs, activation='relu'))
+              
+model.summary()
+
+#model.compile(loss='mse', optimizer=keras.optimizers.Adam(lr=learning_rate), metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.Adam(lr=learning_rate), metrics=['accuracy'])
+#model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.SGD(lr=learning_rate), metrics=['accuracy'])
+
+#model.fit(X_train, X_train, batch_size=batch_size, epochs=n_epochs)
+model.fit(X_train_norm, X_train_norm, batch_size=batch_size, epochs=n_epochs)
+
+#X_predicted= model.predict(X_train)
+X_predicted_norm= model.predict(X_train_norm)
+
+#X_predicted=X_predicted.reshape(60000,28,28)
+X_predicted_norm=X_predicted_norm.reshape(60000,28,28)
+
+def display_mnist_pre():
+    for i in range(5):
+        
+        #img_train_pre = X_predicted[i]
+        img_train_pre = X_predicted_norm[i]
+        plt.imshow(img_train_pre, cmap='gray')
+        plt.show()
+
+firstfiveimg = display_mnist_pre()

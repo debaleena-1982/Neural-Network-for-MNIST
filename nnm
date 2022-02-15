@@ -1,11 +1,11 @@
 import numpy as np
-data_path = "D:\PythonJupyter\...\data\\"
+data_path = "D:\PythonJupyter\...\data\\" 
 mnist_train_x = np.load(data_path + 'mnist_train_x.npy')
 print('MNIST train set shape: ', mnist_train_x.shape)
 
 mnist_train_x_norm = np.array(mnist_train_x)/255
 
-# Exercise 1 code
+# code to display the MNIST dataset
 import matplotlib.pyplot as plt
 
 def display_mnist():
@@ -19,7 +19,7 @@ def display_mnist():
 firstfive = display_mnist()
 
 
-# Exercise 2 code
+# Dataset for train and test data
 
 #X_train = mnist_train_x
 X_train_norm = mnist_train_x_norm

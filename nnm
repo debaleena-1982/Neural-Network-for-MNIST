@@ -1,5 +1,5 @@
 import numpy as np
-data_path = "D:\PythonJupyter\cs342\lab6\data\\"
+data_path = "D:\PythonJupyter\...\data\\"
 mnist_train_x = np.load(data_path + 'mnist_train_x.npy')
 print('MNIST train set shape: ', mnist_train_x.shape)
 
